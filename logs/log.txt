@@ -1,0 +1,6 @@
+[2024-10-19 10:47:59] Received request: {"first_name":"eded","last_name":"eded","email":"ekjnjkl@s.d","phone":"3838383838","select_service":"selecttime","select_price":"$100 - $2000","comments":""}
+[2024-10-19 10:47:59] GeoData for IP (::1): {"status":"fail","message":"Localhost IP, no geo data available","query":"::1"}
+[2024-10-19 10:47:59] Response: {"status":"200","url":"https:\/\/www.google.com","message":"Thank you! We will contact with you!"}
+[2024-10-19 10:51:07] Received request: {"first_name":"rfr","last_name":"rfrf","email":"djehdb@dd.d","phone":"73738377373","select_service":"selecttime","select_price":"$100 - $2000","comments":""}
+[2024-10-19 10:51:07] GeoData for IP (::1): {"status":"fail","message":"Localhost IP, no geo data available","query":"::1"}
+[2024-10-19 10:51:07] Response: {"status":"200","url":"https:\/\/www.google.com","message":"Thank you! We will contact with you!"}
