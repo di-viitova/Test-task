@@ -98,7 +98,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 successModal.classList.remove("show");
                 successModal.style.display = "none";
                 body.style.overflow = 'unset';
-
                 successModal.setAttribute("aria-hidden", "true");
                 successModal.setAttribute("inert", "");
             });
@@ -121,22 +120,35 @@ document.addEventListener("DOMContentLoaded", function () {
             mode: 'cors'
         })
         .then(response => {
+            if (response.status === 403) {
+                displayError(form, 'We have already received your application. You will be contacted soon :)');
+                throw new Error('Application already received (403)');
+            }
             if (!response.ok) {
-                throw new Error('Сервер вернул ошибку: ' + response.status);
+                throw new Error('The server returned an error: ' + response.status);
             }
             return response.json();
         })
         .then(data => {
             showModal(form, data);
-    
+            
+            var eventID = crypto.randomUUID();
+            fbq("track", "Lead", {}, { eventID: eventID });
+
+            gtag('event', 'lead', {});
+
             // Выполнение редиректа (если нужно)
             // setTimeout(() => {
             //     window.location.href = redirUrl;
             // }, 5000);
         })
         .catch(error => {
-            console.error('Ошибка при парсинге JSON:', error);
-            displayError(form, 'Something went wrong... Try again!');
+            console.error('Error:', error);
+            if (error.message !== 'Application already received (403)') {
+                displayError(form, 'Something went wrong... Try again!');
+            }
+
+
         });
     }
     

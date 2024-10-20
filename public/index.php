@@ -1,3 +1,9 @@
+<?php
+   session_start();
+   if (empty($_SESSION['csrf_token'])) {
+      $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+   }
+?>
 <!DOCTYPE html><html lang="en"><!-- Basic --><head><meta charset="utf-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <!-- Mobile Metas -->
@@ -90,6 +96,11 @@
 
       gtag('config', ggl);
    </script>
+       <link
+       rel="stylesheet"
+       href="https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/css/intlTelInput.css"
+     />
+     <link rel="stylesheet" href="./css/form.css">
    </head>
    <body class="realestate_version">
       <!-- LOADER -->
@@ -142,7 +153,7 @@
                      <h3><i class="fa fa-envelope-o grd1 global-radius"></i> QUICK APPOINTMENT</h3>
                      <form id="contactform1" class="row" name="contactform" method="post">
                         <fieldset class="row-fluid">
-                         
+                           <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 
                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                               <input type="text" name="first_name" id="first_name1" class="form-control" placeholder="First Name">
@@ -388,6 +399,131 @@
          <!-- end container -->
       </div>
       <!-- end section -->
+      <div class="container my-block">
+         <div class="my-title">My front-end section</div>
+         <div class="menu-line">
+            <div class="menu-line-container">
+              <div class="menu-line-inner">
+                
+                <nav class="nav">
+                  <a class="menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </a>
+      
+                  <ul class="menu">
+                    <li>
+                      <a href="#" class="nav-item"><span>Lorem</span></a>
+                    </li>
+                    <li>
+                      <a href="#" class="nav-item"><span>Ipsum</span></a>
+                    </li>
+                    <li>
+                      <a href="#" class="nav-item"><span>Dolor</span></a>
+                    </li>
+                    <li>
+                      <a href="#" class="nav-item"><span>Consectetur</span></a>
+                    </li>
+                    <li>
+                      <a href="#" class="nav-item"><span>Elit</span></a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+          <script>
+            const menuBtn = document.querySelector('.menu-btn');
+            const menu = document.querySelector ('.menu');
+            const menuItems = document.querySelectorAll('.menu li'); 
+            menuBtn.addEventListener('click', () => {
+               menu.classList.toggle('menu--active');
+               menuBtn.classList.toggle('menu-btn--active'); // Добавляем класс для изменения кнопки
+
+            })
+            menuItems.forEach(item => {
+               item.addEventListener('click', () => {
+                  menu.classList.remove('menu--active'); // Закрываем меню
+                  menuBtn.classList.remove('menu-btn--active'); // Возвращаем кнопку в исходное состояние
+               });
+            });
+          </script>
+         <div class="form_block" style="margin-top: 15px">
+            <div class="form-wrap">
+              <a href="#">
+                <div class="pop-prod">
+                  <div class="discount-block">
+                    -
+                    <span class="prod_sale">50%</span>
+                  </div>
+                  <img alt="product" class="prod_image" src="./images/prod.png" /></div
+              ></a>
+      
+              <div class="form-part">
+                <div class="form-title">Order with discount</div>
+                <div class="price-block">
+                  <div class="old-price-wrap">
+                    <p class="old-price-name">Old price:</p>
+                    <span class="prod_old_price">12 000$</span>
+                  </div>
+                  <div class="new-price-wrap">
+                    <p class="new-price-name">New price:</p>
+                    <span class="prod_price"> 9 999$</span>
+                  </div>
+                </div>
+      
+                <form method="post" id="regForm" class="regForm">
+                  <label for="name">Enter your name:</label>
+                  <input
+                    class="top_info-form-input"
+                    type="text"
+                    name="name"
+                    required
+                    placeholder="Full name"
+                  />
+                  <label for="phone">Enter your phone:</label>
+                  <input
+                    class="input-field"
+                    id="phone"
+                    type="tel"
+                    required
+                    name="phone"
+                    placeholder="Phone"
+                  />
+                  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/js/intlTelInput.min.js"></script>
+                  <script>
+                    const input = document.querySelector("#phone");
+                    window.intlTelInput(input, {
+                      utilsScript:
+                        "https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/js/utils.js",
+                      showSelectedDialCode: true,
+                      initialCountry: "auto",
+                      geoIpLookup: function (callback) {
+                        fetch("https://ipapi.co/json")
+                          .then(function (res) {
+                            return res.json();
+                          })
+                          .then(function (data) {
+                            callback(data.country_code);
+                          })
+                          .catch(function () {
+                            callback();
+                          });
+                      },
+                    });
+                  </script>
+                  <input
+                    class="top_info-form-btn"
+                    type="submit"
+                    value="Order"
+                    style="cursor: pointer"
+                  />
+                </form>
+              </div>
+            </div>
+          </div>
+      </div>
       <div id="testimonials" class="section lb">
          <div class="container">
             <div class="section-title row text-center">
@@ -497,6 +633,7 @@
                      <div id="message"></div>
                      <form id="contactform" class="row"  name="contactform" method="post">
                         <fieldset class="row-fluid">
+                           <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 
                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                               <input type="text" name="first_name" id="first_name" class="form-control" placeholder="First Name">
@@ -545,6 +682,7 @@
          <!-- end container -->
       </div>
       <!-- end section -->
+ 
       <footer class="footer">
          <div class="container">
             <div class="row">

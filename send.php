@@ -34,8 +34,12 @@ function isValidEmail($email) {
 }
 
 function isValidPhone($phone) {
-    return preg_match('/^\d+$/', $phone);
+    $re = '/^[0-9\-\+\(\)\s]+$/';
+    $minLength = 7;
+    $cleanedPhone = preg_replace('/[^\d]/', '', $phone);
+    return preg_match($re, $phone) && strlen($cleanedPhone) >= $minLength;
 }
+
 
 function saveUserToDatabase($firstName, $lastName, $email, $phone, $comments) {
     global $config;
@@ -82,7 +86,16 @@ function saveUserToDatabase($firstName, $lastName, $email, $phone, $comments) {
     }
 }
 
+session_start();
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        logToFile("CSRF token validation failed.");
+        http_response_code(403); // Forbidden
+        echo json_encode(['error' => 'Invalid CSRF token']);
+        exit;
+    }
+
     $firstName = isset($_POST['first_name']) ? $_POST['first_name'] : '';
     $lastName = isset($_POST['last_name']) ? $_POST['last_name'] : '';
     $email = isset($_POST['email']) ? $_POST['email'] : '';
@@ -131,6 +144,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         header('Content-Type: application/json');
         echo json_encode($response);
+
+        unset($_SESSION['csrf_token']);
     } else {
         logToFile("Error saving data to the database.");
         http_response_code(500); // Internal Server Error
